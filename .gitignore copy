@@ -13,6 +13,9 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
 .env
 go.mod
 go.sum
+log/*
+# client
