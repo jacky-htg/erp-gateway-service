@@ -1,4 +1,4 @@
-# api-gateway
+# Inventory Microservices
 api gateway for inventory micro sevices using grpc.
 - As api gateway, the service will be accessed by public. 
 - The service using grpc secure connection.
