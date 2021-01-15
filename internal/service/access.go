@@ -7,11 +7,10 @@ import (
 
 // Access struct
 type Access struct {
-	AccessClient users.AccessServiceClient
-	UserClient   users.UserServiceClient
+	Client users.AccessServiceClient
 }
 
 // List access
 func (u *Access) List(ctx context.Context, in *users.Empty) (*users.Access, error) {
-	return &users.Access{}, nil
+	return u.Client.List(ctx, in)
 }

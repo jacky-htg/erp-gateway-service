@@ -7,28 +7,27 @@ import (
 
 // Branch struct
 type Branch struct {
-	BranchClient users.BranchServiceClient
-	UserClient   users.UserServiceClient
+	Client users.BranchServiceClient
 }
 
 // Create new branch
 func (u *Branch) Create(ctx context.Context, in *users.Branch) (*users.Branch, error) {
-	return &users.Branch{}, nil
+	return u.Client.Create(ctx, in)
 }
 
 // Update branch
 func (u *Branch) Update(ctx context.Context, in *users.Branch) (*users.Branch, error) {
-	return &users.Branch{}, nil
+	return u.Client.Update(ctx, in)
 }
 
 // View branch
 func (u *Branch) View(ctx context.Context, in *users.Id) (*users.Branch, error) {
-	return &users.Branch{}, nil
+	return u.Client.View(ctx, in)
 }
 
 // Delete branch
 func (u *Branch) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
-	return &users.Boolean{}, nil
+	return u.Client.Delete(ctx, in)
 }
 
 // List branches

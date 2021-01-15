@@ -30,7 +30,8 @@ func (u *Login) Unary() grpc.UnaryServerInterceptor {
 
 		if info.FullMethod != "/wiradata.users.AuthService/Login" &&
 			info.FullMethod != "/wiradata.users.AuthService/ForgotPassword" &&
-			info.FullMethod != "/wiradata.users.AuthService/ResetPassword" {
+			info.FullMethod != "/wiradata.users.AuthService/ResetPassword" &&
+			info.FullMethod != "/wiradata.users.CompanyService/Registration" {
 
 			// Get token from incoming metadata
 			md, ok := metadata.FromIncomingContext(ctx)

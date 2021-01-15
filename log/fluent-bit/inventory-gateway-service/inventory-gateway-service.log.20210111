@@ -43,3 +43,4 @@ time="2021-01-14T22:19:36+07:00" level=fatal msg="Failed to open log file log/fl
 {"level":"info","msg":"serve grpc on port: 8080","service":"inventory-gateway-service-1+0a","time":"2021-01-15T03:13:59Z"}
 {"level":"info","msg":"serve grpc on port: 8080","service":"inventory-gateway-service-1+0a","time":"2021-01-15T03:16:20Z"}
 {"level":"info","msg":"serve grpc on port: 8080","service":"inventory-gateway-service-1+0a","time":"2021-01-15T03:27:17Z"}
+{"level":"info","msg":"serve grpc on port: 8080","service":"inventory-gateway-service-1+0a","time":"2021-01-15T03:48:16Z"}

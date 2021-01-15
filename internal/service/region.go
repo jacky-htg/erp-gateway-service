@@ -8,28 +8,27 @@ import (
 
 // Region struct
 type Region struct {
-	RegionClient users.RegionServiceClient
-	UserClient   users.UserServiceClient
+	Client users.RegionServiceClient
 }
 
 // Create new region
 func (u *Region) Create(ctx context.Context, in *users.Region) (*users.Region, error) {
-	return &users.Region{}, nil
+	return u.Client.Create(ctx, in)
 }
 
 // Update region
 func (u *Region) Update(ctx context.Context, in *users.Region) (*users.Region, error) {
-	return &users.Region{}, nil
+	return u.Client.Update(ctx, in)
 }
 
 // View Region
 func (u *Region) View(ctx context.Context, in *users.Id) (*users.Region, error) {
-	return &users.Region{}, nil
+	return u.Client.View(ctx, in)
 }
 
 // Delete Region
 func (u *Region) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
-	return &users.Boolean{}, nil
+	return u.Client.Delete(ctx, in)
 }
 
 // List Region

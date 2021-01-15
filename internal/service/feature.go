@@ -6,8 +6,7 @@ import (
 
 // Feature struct
 type Feature struct {
-	FeatureClient users.FeatureServiceClient
-	UserClient    users.UserServiceClient
+	Client users.FeatureServiceClient
 }
 
 // List feature

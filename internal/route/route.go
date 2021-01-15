@@ -10,62 +10,33 @@ import (
 // GrpcRoute func
 func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 
-	authServer := service.Auth{
-		AuthClient: grpcClient["AuthClient"].(users.AuthServiceClient),
-		UserClient: grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	authServer := service.Auth{Client: grpcClient["AuthClient"].(users.AuthServiceClient)}
 	users.RegisterAuthServiceServer(grpcServer, &authServer)
 
-	userServer := service.User{
-		UserClient: grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	userServer := service.User{Client: grpcClient["UserClient"].(users.UserServiceClient)}
 	users.RegisterUserServiceServer(grpcServer, &userServer)
 
-	companyServer := service.Company{
-		CompanyClient: grpcClient["CompanyClient"].(users.CompanyServiceClient),
-		UserClient:    grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	companyServer := service.Company{Client: grpcClient["CompanyClient"].(users.CompanyServiceClient)}
 	users.RegisterCompanyServiceServer(grpcServer, &companyServer)
 
-	regionServer := service.Region{
-		RegionClient: grpcClient["RegionClient"].(users.RegionServiceClient),
-		UserClient:   grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	regionServer := service.Region{Client: grpcClient["RegionClient"].(users.RegionServiceClient)}
 	users.RegisterRegionServiceServer(grpcServer, &regionServer)
 
-	branchServer := service.Branch{
-		BranchClient: grpcClient["BranchClient"].(users.BranchServiceClient),
-		UserClient:   grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	branchServer := service.Branch{Client: grpcClient["BranchClient"].(users.BranchServiceClient)}
 	users.RegisterBranchServiceServer(grpcServer, &branchServer)
 
-	employeeServer := service.Employee{
-		EmployeeClient: grpcClient["EmployeeClient"].(users.EmployeeServiceClient),
-		UserClient:     grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	employeeServer := service.Employee{Client: grpcClient["EmployeeClient"].(users.EmployeeServiceClient)}
 	users.RegisterEmployeeServiceServer(grpcServer, &employeeServer)
 
-	featureServer := service.Feature{
-		FeatureClient: grpcClient["FeatureClient"].(users.FeatureServiceClient),
-		UserClient:    grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	featureServer := service.Feature{Client: grpcClient["FeatureClient"].(users.FeatureServiceClient)}
 	users.RegisterFeatureServiceServer(grpcServer, &featureServer)
 
-	packageFeatureServer := service.PackageFeature{
-		PackageFeatureClient: grpcClient["PackageFeatureClient"].(users.PackageFeatureServiceClient),
-		UserClient:           grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	packageFeatureServer := service.PackageFeature{Client: grpcClient["PackageFeatureClient"].(users.PackageFeatureServiceClient)}
 	users.RegisterPackageFeatureServiceServer(grpcServer, &packageFeatureServer)
 
-	accessServer := service.Access{
-		AccessClient: grpcClient["AccessClient"].(users.AccessServiceClient),
-		UserClient:   grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	accessServer := service.Access{Client: grpcClient["AccessClient"].(users.AccessServiceClient)}
 	users.RegisterAccessServiceServer(grpcServer, &accessServer)
 
-	groupServer := service.Group{
-		GroupClient: grpcClient["GroupClient"].(users.GroupServiceClient),
-		UserClient:  grpcClient["UserClient"].(users.UserServiceClient),
-	}
+	groupServer := service.Group{Client: grpcClient["GroupClient"].(users.GroupServiceClient)}
 	users.RegisterGroupServiceServer(grpcServer, &groupServer)
 }
