@@ -47,7 +47,7 @@ func main() {
 	loginInterceptor := middleware.Login{Client: grpcClient["UserClient"].(users.UserServiceClient)}
 	serverOptions := []grpc.ServerOption{
 		grpc.UnaryInterceptor(loginInterceptor.Unary()),
-		// grpc.StreamInterceptor(interceptor.Stream()),
+		grpc.StreamInterceptor(loginInterceptor.Stream()),
 	}
 
 	grpcServer := grpc.NewServer(serverOptions...)

@@ -48,7 +48,7 @@ func Init() *logrus.Entry {
 
 	logFile, err := os.OpenFile(logLocation, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatalf("Failed to open log file %s for output: %s", logLocation, err)
+		log.Errorf("Failed to open log file %s for output: %s", logLocation, err)
 	}
 	log.SetOutput(io.MultiWriter(os.Stderr, logFile))
 

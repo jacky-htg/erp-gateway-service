@@ -27,50 +27,77 @@ func (u *Login) Unary() grpc.UnaryServerInterceptor {
 		handler grpc.UnaryHandler,
 	) (interface{}, error) {
 		log.Println("--> unary interceptor: ", info.FullMethod)
+		var err error
 
 		if info.FullMethod != "/wiradata.users.AuthService/Login" &&
 			info.FullMethod != "/wiradata.users.AuthService/ForgotPassword" &&
 			info.FullMethod != "/wiradata.users.AuthService/ResetPassword" &&
 			info.FullMethod != "/wiradata.users.CompanyService/Registration" {
-
-			// Get token from incoming metadata
-			md, ok := metadata.FromIncomingContext(ctx)
-			if !ok {
-				return nil, status.Errorf(codes.Unauthenticated, "metadata is not provided")
-			}
-
-			token := md["token"]
-			if len(token) == 0 {
-				return nil, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
-			}
-
-			ctx = context.WithValue(ctx, app.Ctx("token"), token[0])
-
-			// Set token to outgoing metadata
-			mdOutgoing := metadata.New(map[string]string{
-				"token": ctx.Value(app.Ctx("token")).(string),
-			})
-
-			ctx = metadata.NewOutgoingContext(ctx, mdOutgoing)
-
-			// Get User login by token
-			var userLogin *users.User
-			userLogin, err := u.Client.GetByToken(ctx, &users.Empty{})
+			ctx, err = u.login(ctx)
 			if err != nil {
 				return nil, err
 			}
-
-			ctx = context.WithValue(ctx, app.Ctx("userID"), userLogin.GetId())
-			ctx = context.WithValue(ctx, app.Ctx("companyID"), userLogin.GetCompanyId())
-
-			// Set token to outgoing metadata
-			mdOutgoing = metadata.New(map[string]string{
-				"user_id":    ctx.Value(app.Ctx("userID")).(string),
-				"company_id": ctx.Value(app.Ctx("companyID")).(string),
-			})
-
-			ctx = metadata.NewOutgoingContext(ctx, mdOutgoing)
 		}
 		return handler(ctx, req)
 	}
+}
+
+// Stream interceptor
+func (u *Login) Stream() grpc.StreamServerInterceptor {
+	return func(
+		srv interface{},
+		stream grpc.ServerStream,
+		info *grpc.StreamServerInfo,
+		handler grpc.StreamHandler,
+	) error {
+		log.Println("--> stream interceptor: ", info.FullMethod)
+		_, err := u.login(stream.Context())
+		if err != nil {
+			return err
+		}
+
+		return handler(srv, stream)
+	}
+}
+
+func (u *Login) login(ctx context.Context) (context.Context, error) {
+	// Get token from incoming metadata
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return ctx, status.Errorf(codes.Unauthenticated, "metadata is not provided")
+	}
+
+	token := md["token"]
+	if len(token) == 0 {
+		return ctx, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
+	}
+
+	ctx = context.WithValue(ctx, app.Ctx("token"), token[0])
+
+	// Set token to outgoing metadata
+	mdOutgoing := metadata.New(map[string]string{
+		"token": ctx.Value(app.Ctx("token")).(string),
+	})
+
+	ctx = metadata.NewOutgoingContext(ctx, mdOutgoing)
+
+	// Get User login by token
+	var userLogin *users.User
+	userLogin, err := u.Client.GetByToken(ctx, &users.Empty{})
+	if err != nil {
+		return ctx, err
+	}
+
+	ctx = context.WithValue(ctx, app.Ctx("userID"), userLogin.GetId())
+	ctx = context.WithValue(ctx, app.Ctx("companyID"), userLogin.GetCompanyId())
+
+	// Set token to outgoing metadata
+	mdOutgoing = metadata.New(map[string]string{
+		"user_id":    ctx.Value(app.Ctx("userID")).(string),
+		"company_id": ctx.Value(app.Ctx("companyID")).(string),
+	})
+
+	ctx = metadata.NewOutgoingContext(ctx, mdOutgoing)
+
+	return ctx, nil
 }
