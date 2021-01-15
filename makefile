@@ -13,4 +13,7 @@ seed:
 server:
 	go run server.go
 
+server-tls:
+	go run server.go --tls
+
 .PHONY: gen init migrate seed server
