@@ -1,9 +1,9 @@
 package service
 
 import (
+	users "inventory-gateway-service/pb"
 	"io"
 	"log"
-	users "inventory-gateway-service/pb"
 
 	"golang.org/x/net/context"
 )
@@ -76,14 +76,4 @@ func ListUser(ctx context.Context, user users.UserServiceClient) {
 		}
 		log.Printf("Resp received: %s : %v", resp.GetUser(), resp.GetPagination())
 	}
-}
-
-// GetUserByToken service client
-func GetUserByToken(ctx context.Context, user users.UserServiceClient) {
-	response, err := user.GetByToken(setMetadataToken(ctx), &users.Empty{})
-
-	if err != nil {
-		log.Fatalf("Error when calling grpc service: %s", err)
-	}
-	log.Printf("Resp received: %v", response)
 }

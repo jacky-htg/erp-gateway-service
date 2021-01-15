@@ -29,25 +29,10 @@ func (u *Auth) ResetPassword(ctx context.Context, in *users.ResetPasswordRequest
 
 // ChangePassword service
 func (u *Auth) ChangePassword(ctx context.Context, in *users.ChangePasswordRequest) (*users.Message, error) {
-	var output *users.Message
-	output.Message = "Failed"
-
-	ctx, err := getUserLoginCtx(ctx, u.UserClient)
-	if err != nil {
-		return output, err
-	}
-
-	return u.AuthClient.ChangePassword(setMetadata(ctx), in)
+	return u.AuthClient.ChangePassword(ctx, in)
 }
 
 // IsAuth service
 func (u *Auth) IsAuth(ctx context.Context, in *users.String) (*users.Boolean, error) {
-	output := &users.Boolean{Boolean: false}
-
-	ctx, err := getUserLoginCtx(ctx, u.UserClient)
-	if err != nil {
-		return output, err
-	}
-
-	return u.AuthClient.IsAuth(setMetadata(ctx), in)
+	return u.AuthClient.IsAuth(ctx, in)
 }

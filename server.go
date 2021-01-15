@@ -1,6 +1,7 @@
 package main
 
 import (
+	"inventory-gateway-service/internal/middleware"
 	"net"
 	"os"
 
@@ -35,27 +36,21 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
-
-	grpcClient := make(map[string]interface{})
-
-	var userSeviceConn *grpc.ClientConn
-	userSeviceConn, err = grpc.Dial(":8000", grpc.WithInsecure())
+	var userServiceConn *grpc.ClientConn
+	userServiceConn, err = grpc.Dial(os.Getenv("USER_SERVICE"), grpc.WithInsecure())
 	if err != nil {
 		log.Errorf("user service connection: %v", err)
 	}
-	defer userSeviceConn.Close()
+	defer userServiceConn.Close()
+	grpcClient := getGrpcClient(userServiceConn)
 
-	grpcClient["AuthClient"] = users.NewAuthServiceClient(userSeviceConn)
-	grpcClient["UserClient"] = users.NewUserServiceClient(userSeviceConn)
-	grpcClient["CompanyClient"] = users.NewCompanyServiceClient(userSeviceConn)
-	grpcClient["RegionClient"] = users.NewRegionServiceClient(userSeviceConn)
-	grpcClient["BranchClient"] = users.NewBranchServiceClient(userSeviceConn)
-	grpcClient["EmployeeClient"] = users.NewEmployeeServiceClient(userSeviceConn)
-	grpcClient["FeatureClient"] = users.NewFeatureServiceClient(userSeviceConn)
-	grpcClient["PackageFeatureClient"] = users.NewPackageFeatureServiceClient(userSeviceConn)
-	grpcClient["AccessClient"] = users.NewAccessServiceClient(userSeviceConn)
-	grpcClient["GroupClient"] = users.NewGroupServiceClient(userSeviceConn)
+	loginInterceptor := middleware.Login{Client: grpcClient["UserClient"].(users.UserServiceClient)}
+	serverOptions := []grpc.ServerOption{
+		grpc.UnaryInterceptor(loginInterceptor.Unary()),
+		// grpc.StreamInterceptor(interceptor.Stream()),
+	}
+
+	grpcServer := grpc.NewServer(serverOptions...)
 
 	// routing grpc services
 	route.GrpcRoute(grpcServer, grpcClient)
@@ -64,4 +59,20 @@ func main() {
 		log.Fatalf("failed to serve: %s", err)
 		return
 	}
+}
+
+func getGrpcClient(userServiceConn *grpc.ClientConn) map[string]interface{} {
+	grpcClient := make(map[string]interface{})
+	grpcClient["AuthClient"] = users.NewAuthServiceClient(userServiceConn)
+	grpcClient["UserClient"] = users.NewUserServiceClient(userServiceConn)
+	grpcClient["CompanyClient"] = users.NewCompanyServiceClient(userServiceConn)
+	grpcClient["RegionClient"] = users.NewRegionServiceClient(userServiceConn)
+	grpcClient["BranchClient"] = users.NewBranchServiceClient(userServiceConn)
+	grpcClient["EmployeeClient"] = users.NewEmployeeServiceClient(userServiceConn)
+	grpcClient["FeatureClient"] = users.NewFeatureServiceClient(userServiceConn)
+	grpcClient["PackageFeatureClient"] = users.NewPackageFeatureServiceClient(userServiceConn)
+	grpcClient["AccessClient"] = users.NewAccessServiceClient(userServiceConn)
+	grpcClient["GroupClient"] = users.NewGroupServiceClient(userServiceConn)
+
+	return grpcClient
 }

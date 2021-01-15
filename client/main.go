@@ -36,7 +36,7 @@ func main() {
 	// service.ForgotPassword(ctx, auth)
 	// service.ResetPassword(ctx, auth)
 	// service.ChangePassword(ctx, auth)
-	// service.IsAuth(ctx, auth)
+	service.IsAuth(ctx, auth)
 	// service.CreateUser(ctx, user)
 	// service.UpdateUser(ctx, user)
 	// service.ViewUser(ctx, user)

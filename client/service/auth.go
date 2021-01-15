@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"log"
 	"inventory-gateway-service/internal/pkg/app"
 	users "inventory-gateway-service/pb"
+	"log"
 )
 
 // Login service client
@@ -34,7 +34,7 @@ func ForgotPassword(ctx context.Context, auth users.AuthServiceClient) {
 // ResetPassword service client
 func ResetPassword(ctx context.Context, auth users.AuthServiceClient) {
 	response, err := auth.ResetPassword(ctx, &users.ResetPasswordRequest{
-		Token:       "4d5de8c6-46cd-453f-88f1-fe904ee01746",
+		Token:       "19eaa6a5-1c36-42b2-92ef-99771d5ae86a",
 		NewPassword: "12345",
 		RePassword:  "12345",
 	})
