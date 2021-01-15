@@ -1,8 +1,8 @@
 # Inventory Microservices
-api gateway for inventory micro sevices using grpc.
+api gateway for inventory micro sevices using golang and grpc framework.
 - As api gateway, the service will be accessed by public. 
 - The service using grpc secure connection.
-- The service will call other service in local network
+- The service will call other service in local network.
 
 ## Architecture
 ![Inventory Micro Services Arcgitecture](./inventory-micro-services.png)
