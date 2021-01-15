@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	users "inventory-gateway-service/pb"
-	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -13,7 +12,6 @@ import (
 // Auth struct
 type Auth struct {
 	Client users.AuthServiceClient
-	Token  string
 }
 
 // Unary interceptor
@@ -48,7 +46,6 @@ func (u *Auth) Stream() grpc.StreamServerInterceptor {
 		info *grpc.StreamServerInfo,
 		handler grpc.StreamHandler,
 	) error {
-		log.Println("--> stream interceptor: ", info.FullMethod)
 		err := u.auth(stream.Context(), info.FullMethod)
 		if err != nil {
 			return err

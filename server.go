@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"inventory-gateway-service/internal/middleware"
 	"net"
 	"os"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 
@@ -17,6 +19,9 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	enableTLS := flag.Bool("tls", false, "enable SSL/TLS")
+	flag.Parse()
+	println(enableTLS)
 	// lookup and setup env
 	if _, ok := os.LookupEnv("PORT"); !ok {
 		config.Setup(".env")
@@ -36,6 +41,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// err = runGRPCServer(*enableTLS, listener)
+
 	var userServiceConn *grpc.ClientConn
 	userServiceConn, err = grpc.Dial(os.Getenv("USER_SERVICE"), grpc.WithInsecure())
 	if err != nil {
@@ -47,10 +54,14 @@ func main() {
 	loginInterceptor := middleware.Login{Client: grpcClient["UserClient"].(users.UserServiceClient)}
 	authInterceptor := middleware.Auth{Client: grpcClient["AuthClient"].(users.AuthServiceClient)}
 	serverOptions := []grpc.ServerOption{
-		grpc.UnaryInterceptor(loginInterceptor.Unary()),
-		grpc.StreamInterceptor(loginInterceptor.Stream()),
-		grpc.UnaryInterceptor(authInterceptor.Unary()),
-		grpc.StreamInterceptor(authInterceptor.Stream()),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			loginInterceptor.Unary(),
+			authInterceptor.Unary(),
+		)),
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			loginInterceptor.Stream(),
+			authInterceptor.Stream(),
+		)),
 	}
 
 	grpcServer := grpc.NewServer(serverOptions...)

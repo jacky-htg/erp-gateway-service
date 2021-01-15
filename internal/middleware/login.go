@@ -49,7 +49,6 @@ func (u *Login) Stream() grpc.StreamServerInterceptor {
 		info *grpc.StreamServerInfo,
 		handler grpc.StreamHandler,
 	) error {
-		log.Println("--> stream interceptor: ", info.FullMethod)
 		_, err := u.login(stream.Context())
 		if err != nil {
 			return err
