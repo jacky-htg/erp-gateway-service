@@ -15,7 +15,6 @@ import (
 // Login struct
 type Login struct {
 	Client users.UserServiceClient
-	Token  string
 }
 
 // Unary interceptor
