@@ -3,6 +3,11 @@ package service
 import (
 	"context"
 	users "inventory-gateway-service/pb"
+	"io"
+	"log"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // Group struct
@@ -31,7 +36,29 @@ func (u *Group) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error
 }
 
 // List Group
-func (u *Group) List(in *users.ListGroupRequest, stream users.GroupService_ListServer) error {
+func (u *Group) List(in *users.ListGroupRequest, streamServer users.GroupService_ListServer) error {
+	ctx := streamServer.Context()
+	streamClient, err := u.Client.List(ctx, in)
+	if err != nil {
+		return status.Errorf(codes.Internal, "Error when calling User.List service: %s", err)
+	}
+
+	for {
+		resp, err := streamClient.Recv()
+		if err == io.EOF {
+			log.Print("end stream")
+			break
+		}
+		if err != nil {
+			return status.Errorf(codes.Internal, "cannot receive %v", err)
+		}
+
+		err = streamServer.Send(resp)
+		if err != nil {
+			return status.Errorf(codes.Unknown, "cannot send stream response: %v", err)
+		}
+	}
+
 	return nil
 }
 
