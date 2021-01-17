@@ -11,7 +11,7 @@ api gateway for ERP microsrevices using golang and grpc framework.
 - [X] [User Service](https://github.com/jacky-htg/user-service)
 - [ ] Sales Service
 - [ ] Purchase Service
-- [ ] Inventory Service
+- [ ] [Inventory Service](https://github.com/jacky-htg/inventory-service)
 - [ ] General Ledger Service
 
 ## Get Started 
