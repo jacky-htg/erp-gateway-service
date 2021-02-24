@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"erp-gateway-service/internal/pkg/app"
+	"erp-gateway/internal/pkg/app"
 	"erp-gateway/pb/users"
 	"log"
 )

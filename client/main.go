@@ -6,7 +6,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	"erp-gateway-service/client/service"
+	"erp-gateway/client/service"
 	"erp-gateway/pb/users"
 )
 
