@@ -2,7 +2,7 @@ gen:
 	protoc --proto_path=proto proto/users/*.proto --go_out=plugins=grpc:. 
 
 init:
-	go mod init user-service
+	go mod init erp-gateway-service
 
 migrate:
 	go run cmd/cli.go migrate
