@@ -3,8 +3,8 @@ package route
 import (
 	"google.golang.org/grpc"
 
-	"inventory-gateway-service/internal/service"
-	users "inventory-gateway-service/pb"
+	"erp-gateway-service/internal/service"
+	"erp-gateway/pb/users"
 )
 
 // GrpcRoute func

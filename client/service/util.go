@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"inventory-gateway-service/internal/pkg/app"
+	"erp-gateway-service/internal/pkg/app"
 
 	"google.golang.org/grpc/metadata"
 )

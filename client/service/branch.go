@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
+	"erp-gateway/pb/users"
 	"io"
 	"log"
-	users "inventory-gateway-service/pb"
 )
 
 // CreateBranch service client

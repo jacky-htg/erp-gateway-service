@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"context"
-	users "inventory-gateway-service/pb"
+
+	""erp-gateway/pb/users""
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

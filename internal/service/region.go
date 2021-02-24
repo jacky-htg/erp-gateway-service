@@ -5,7 +5,7 @@ import (
 	"io"
 	"log"
 
-	users "inventory-gateway-service/pb"
+	"erp-gateway/pb/users"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

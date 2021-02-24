@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	users "inventory-gateway-service/pb"
+	"erp-gateway/pb/users"
 	"io"
 	"log"
 

@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
+	"erp-gateway/pb/users"
 	"log"
-	users "inventory-gateway-service/pb"
 )
 
 // ViewAccessTree service client

@@ -3,9 +3,9 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"erp-gateway-service/internal/middleware"
 	"flag"
 	"fmt"
-	"inventory-gateway-service/internal/middleware"
 	"io/ioutil"
 	"net"
 	"os"
@@ -15,10 +15,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"inventory-gateway-service/internal/config"
-	"inventory-gateway-service/internal/pkg/log/logruslog"
-	"inventory-gateway-service/internal/route"
-	users "inventory-gateway-service/pb"
+	"erp-gateway-service/internal/config"
+	"erp-gateway-service/internal/pkg/log/logruslog"
+	"erp-gateway-service/internal/route"
+	"erp-gateway/pb/users"
 )
 
 const defaultPort = "8080"

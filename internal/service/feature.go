@@ -1,7 +1,7 @@
 package service
 
 import (
-	users "inventory-gateway-service/pb"
+	"erp-gateway/pb/users"
 	"io"
 	"log"
 

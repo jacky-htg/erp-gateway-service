@@ -6,8 +6,8 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	"inventory-gateway-service/client/service"
-	users "inventory-gateway-service/pb"
+	"erp-gateway-service/client/service"
+	"erp-gateway/pb/users"
 )
 
 func main() {
