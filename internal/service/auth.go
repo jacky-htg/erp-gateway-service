@@ -32,6 +32,6 @@ func (u *Auth) ChangePassword(ctx context.Context, in *users.ChangePasswordReque
 }
 
 // IsAuth service
-func (u *Auth) IsAuth(ctx context.Context, in *users.String) (*users.Boolean, error) {
+func (u *Auth) IsAuth(ctx context.Context, in *users.MyString) (*users.MyBoolean, error) {
 	return u.Client.IsAuth(ctx, in)
 }

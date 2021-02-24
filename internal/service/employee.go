@@ -31,7 +31,7 @@ func (u *Employee) View(ctx context.Context, in *users.Id) (*users.Employee, err
 }
 
 // Delete Employee
-func (u *Employee) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
+func (u *Employee) Delete(ctx context.Context, in *users.Id) (*users.MyBoolean, error) {
 	return u.Client.Delete(ctx, in)
 }
 

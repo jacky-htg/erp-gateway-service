@@ -32,7 +32,7 @@ func (u *Region) View(ctx context.Context, in *users.Id) (*users.Region, error) 
 }
 
 // Delete Region
-func (u *Region) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
+func (u *Region) Delete(ctx context.Context, in *users.Id) (*users.MyBoolean, error) {
 	return u.Client.Delete(ctx, in)
 }
 

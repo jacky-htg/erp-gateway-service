@@ -31,7 +31,7 @@ func (u *Branch) View(ctx context.Context, in *users.Id) (*users.Branch, error) 
 }
 
 // Delete branch
-func (u *Branch) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
+func (u *Branch) Delete(ctx context.Context, in *users.Id) (*users.MyBoolean, error) {
 	return u.Client.Delete(ctx, in)
 }
 

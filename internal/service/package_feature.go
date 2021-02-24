@@ -21,7 +21,7 @@ func (u *PackageFeature) View(ctx context.Context, in *users.Id) (*users.Package
 }
 
 // List PackageFeature
-func (u *PackageFeature) List(in *users.Empty, streamServer users.PackageFeatureService_ListServer) error {
+func (u *PackageFeature) List(in *users.MyEmpty, streamServer users.PackageFeatureService_ListServer) error {
 	ctx := streamServer.Context()
 	streamClient, err := u.Client.List(ctx, in)
 	if err != nil {

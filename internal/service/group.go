@@ -31,7 +31,7 @@ func (u *Group) View(ctx context.Context, in *users.Id) (*users.Group, error) {
 }
 
 // Delete Group
-func (u *Group) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
+func (u *Group) Delete(ctx context.Context, in *users.Id) (*users.MyBoolean, error) {
 	return u.Client.Delete(ctx, in)
 }
 

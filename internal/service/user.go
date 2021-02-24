@@ -31,7 +31,7 @@ func (u *User) View(ctx context.Context, in *users.Id) (*users.User, error) {
 }
 
 // Delete func
-func (u *User) Delete(ctx context.Context, in *users.Id) (*users.Boolean, error) {
+func (u *User) Delete(ctx context.Context, in *users.Id) (*users.MyBoolean, error) {
 	return u.Client.Delete(ctx, in)
 }
 
@@ -63,6 +63,6 @@ func (u *User) List(in *users.ListUserRequest, streamServer users.UserService_Li
 }
 
 // GetByToken func
-func (u *User) GetByToken(ctx context.Context, in *users.Empty) (*users.User, error) {
+func (u *User) GetByToken(ctx context.Context, in *users.MyEmpty) (*users.User, error) {
 	panic("not implemented")
 }

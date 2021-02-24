@@ -15,7 +15,7 @@ type Feature struct {
 }
 
 // List feature
-func (u *Feature) List(in *users.Empty, streamServer users.FeatureService_ListServer) error {
+func (u *Feature) List(in *users.MyEmpty, streamServer users.FeatureService_ListServer) error {
 	ctx := streamServer.Context()
 	streamClient, err := u.Client.List(ctx, in)
 	if err != nil {
