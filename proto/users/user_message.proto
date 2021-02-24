@@ -1,10 +1,11 @@
 syntax = "proto3";
 package wiradata.users;
 
-option go_package = "pb;users";
+option go_package = "pb/users;users";
+option java_package = "com.wiradata.erpapplication.users";
+option java_multiple_files = true;
 
-import "google/protobuf/timestamp.proto";
-import "group_message.proto";
+import "users/group_message.proto";
 
 message User {
   string id = 1;
@@ -15,7 +16,7 @@ message User {
   string name = 6;
   string email = 7;
   Group group = 8;
-  google.protobuf.Timestamp created_at =  9;
-  google.protobuf.Timestamp updated_at = 10;
+  string created_at =  9;
+  string updated_at = 10;
   string updated_by = 11;
 }
