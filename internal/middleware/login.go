@@ -81,7 +81,7 @@ func (u *Login) login(ctx context.Context) (context.Context, error) {
 
 	// Get User login by token
 	var userLogin *users.User
-	userLogin, err := u.Client.GetByToken(ctx, &users.Empty{})
+	userLogin, err := u.Client.GetByToken(ctx, &users.MyEmpty{})
 	if err != nil {
 		return ctx, err
 	}

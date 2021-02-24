@@ -3,7 +3,7 @@ package middleware
 import (
 	"context"
 
-	""erp-gateway/pb/users""
+	"erp-gateway/pb/users"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -57,7 +57,7 @@ func (u *Auth) Stream() grpc.StreamServerInterceptor {
 }
 
 func (u *Auth) auth(ctx context.Context, fullMethod string) error {
-	isAuth, err := u.Client.IsAuth(ctx, &users.String{String_: fullMethod})
+	isAuth, err := u.Client.IsAuth(ctx, &users.MyString{String_: fullMethod})
 	if err != nil {
 		return err
 	}

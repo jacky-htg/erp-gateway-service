@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"erp-gateway/internal/middleware"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -16,6 +15,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"erp-gateway/internal/config"
+	"erp-gateway/internal/middleware"
 	"erp-gateway/internal/pkg/log/logruslog"
 	"erp-gateway/internal/route"
 	"erp-gateway/pb/users"
