@@ -8,6 +8,7 @@ import (
 // Company struct
 type Company struct {
 	Client users.CompanyServiceClient
+	users.UnimplementedCompanyServiceServer
 }
 
 // Registration new company

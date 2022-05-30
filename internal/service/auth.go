@@ -9,6 +9,7 @@ import (
 // Auth struct
 type Auth struct {
 	Client users.AuthServiceClient
+	users.UnimplementedAuthServiceServer
 }
 
 // Login service

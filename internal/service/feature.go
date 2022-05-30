@@ -12,6 +12,7 @@ import (
 // Feature struct
 type Feature struct {
 	Client users.FeatureServiceClient
+	users.UnimplementedFeatureServiceServer
 }
 
 // List feature

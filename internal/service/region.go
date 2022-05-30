@@ -14,6 +14,7 @@ import (
 // Region struct
 type Region struct {
 	Client users.RegionServiceClient
+	users.UnimplementedRegionServiceServer
 }
 
 // Create new region

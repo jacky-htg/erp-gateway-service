@@ -13,6 +13,7 @@ import (
 // PackageFeature struct
 type PackageFeature struct {
 	Client users.PackageFeatureServiceClient
+	users.UnimplementedPackageFeatureServiceServer
 }
 
 // View Package Feature

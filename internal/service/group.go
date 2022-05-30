@@ -13,6 +13,7 @@ import (
 // Group struct
 type Group struct {
 	Client users.GroupServiceClient
+	users.UnimplementedGroupServiceServer
 }
 
 // Create Group

@@ -8,6 +8,7 @@ import (
 // Access struct
 type Access struct {
 	Client users.AccessServiceClient
+	users.UnimplementedAccessServiceServer
 }
 
 // List access

@@ -13,6 +13,7 @@ import (
 // User struct
 type User struct {
 	Client users.UserServiceClient
+	users.UnimplementedUserServiceServer
 }
 
 // Create func

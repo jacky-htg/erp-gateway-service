@@ -13,6 +13,7 @@ import (
 // Employee struct
 type Employee struct {
 	Client users.EmployeeServiceClient
+	users.UnimplementedEmployeeServiceServer
 }
 
 // Create Employee

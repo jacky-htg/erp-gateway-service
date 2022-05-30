@@ -13,6 +13,7 @@ import (
 // Branch struct
 type Branch struct {
 	Client users.BranchServiceClient
+	users.UnimplementedBranchServiceServer
 }
 
 // Create new branch
