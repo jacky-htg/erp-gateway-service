@@ -5,73 +5,64 @@ import (
 	"crypto/x509"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"log"
 	"net"
+	"net/http"
 	"os"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"erp-gateway/internal/config"
 	"erp-gateway/internal/middleware"
-	"erp-gateway/internal/pkg/log/logruslog"
 	"erp-gateway/internal/route"
 	"erp-gateway/pb/users"
 )
 
 const defaultPort = "8080"
 
+type RpcServer struct {
+	Grpc        *grpc.Server
+	WrappedGrpc *grpcweb.WrappedGrpcServer
+}
+
+func NewServer(serverOptions []grpc.ServerOption) *RpcServer {
+	gs := grpc.NewServer(serverOptions...)
+	return &RpcServer{
+		Grpc:        gs,
+		WrappedGrpc: grpcweb.WrapServer(gs),
+	}
+}
+
 func main() {
 	enableTLS := flag.Bool("tls", false, "enable SSL/TLS")
 	flag.Parse()
 
-	// lookup and setup env
 	if _, ok := os.LookupEnv("PORT"); !ok {
 		config.Setup(".env")
 	}
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
-
-	// init log
-	log := logruslog.Init()
-
-	// listen tcp port
-	lis, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
-	log.Info("listen port:", port)
-
-	if err = runGrpcServer(*enableTLS, lis); err != nil {
-		log.Fatalf("failed run grpc server: %v", err)
-		return
+	log := log.New(os.Stdout, "Essentials : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
+	if err := run(enableTLS); err != nil {
+		log.Printf("error: shutting down: %s", err)
+		os.Exit(1)
 	}
 }
 
-func getGrpcClient(userServiceConn *grpc.ClientConn) map[string]interface{} {
-	grpcClient := make(map[string]interface{})
-	grpcClient["AuthClient"] = users.NewAuthServiceClient(userServiceConn)
-	grpcClient["UserClient"] = users.NewUserServiceClient(userServiceConn)
-	grpcClient["CompanyClient"] = users.NewCompanyServiceClient(userServiceConn)
-	grpcClient["RegionClient"] = users.NewRegionServiceClient(userServiceConn)
-	grpcClient["BranchClient"] = users.NewBranchServiceClient(userServiceConn)
-	grpcClient["EmployeeClient"] = users.NewEmployeeServiceClient(userServiceConn)
-	grpcClient["FeatureClient"] = users.NewFeatureServiceClient(userServiceConn)
-	grpcClient["PackageFeatureClient"] = users.NewPackageFeatureServiceClient(userServiceConn)
-	grpcClient["AccessClient"] = users.NewAccessServiceClient(userServiceConn)
-	grpcClient["GroupClient"] = users.NewGroupServiceClient(userServiceConn)
+func run(enableTLS *bool) error {
 
-	return grpcClient
-}
+	if len(os.Getenv("PORT")) == 0 {
+		os.Setenv("PORT", defaultPort)
+	}
 
-func runGrpcServer(enableTLS bool, listener net.Listener) error {
-	userServiceConn, err := grpc.Dial(os.Getenv("USER_SERVICE"), grpc.WithInsecure())
+	port := map[string]string{"grpc": os.Getenv("PORT"), "web": "9090"}
+	clientCreds := insecure.NewCredentials()
+	userServiceConn, err := grpc.NewClient(os.Getenv("USER_SERVICE"), grpc.WithTransportCredentials(clientCreds))
 	if err != nil {
 		return fmt.Errorf("user service connection: %v", err)
 	}
@@ -91,7 +82,7 @@ func runGrpcServer(enableTLS bool, listener net.Listener) error {
 		)),
 	}
 
-	if enableTLS {
+	if *enableTLS {
 		tlsCredentials, err := loadTLSCredentials()
 		if err != nil {
 			return fmt.Errorf("cannot load TLS credentials: %w", err)
@@ -100,11 +91,48 @@ func runGrpcServer(enableTLS bool, listener net.Listener) error {
 		serverOptions = append(serverOptions, grpc.Creds(tlsCredentials))
 	}
 
-	grpcServer := grpc.NewServer(serverOptions...)
+	rpcServer := NewServer(serverOptions)
+	route.GrpcRoute(rpcServer.Grpc, grpcClient)
 
-	// routing grpc services
-	route.GrpcRoute(grpcServer, grpcClient)
-	if err := grpcServer.Serve(listener); err != nil {
+	errChan := make(chan error)
+	go func() {
+		errChan <- runGrpcServer(port["grpc"], rpcServer)
+	}()
+
+	go func() {
+		errChan <- runWebServer(port["web"], rpcServer)
+	}()
+
+	if e := <-errChan; e != nil {
+		return e
+	}
+
+	return nil
+}
+
+func getGrpcClient(userServiceConn *grpc.ClientConn) map[string]interface{} {
+	grpcClient := make(map[string]interface{})
+	grpcClient["AuthClient"] = users.NewAuthServiceClient(userServiceConn)
+	grpcClient["UserClient"] = users.NewUserServiceClient(userServiceConn)
+	grpcClient["CompanyClient"] = users.NewCompanyServiceClient(userServiceConn)
+	grpcClient["RegionClient"] = users.NewRegionServiceClient(userServiceConn)
+	grpcClient["BranchClient"] = users.NewBranchServiceClient(userServiceConn)
+	grpcClient["EmployeeClient"] = users.NewEmployeeServiceClient(userServiceConn)
+	grpcClient["FeatureClient"] = users.NewFeatureServiceClient(userServiceConn)
+	grpcClient["PackageFeatureClient"] = users.NewPackageFeatureServiceClient(userServiceConn)
+	grpcClient["AccessClient"] = users.NewAccessServiceClient(userServiceConn)
+	grpcClient["GroupClient"] = users.NewGroupServiceClient(userServiceConn)
+
+	return grpcClient
+}
+
+func runGrpcServer(port string, rpcServer *RpcServer) error {
+	listener, err := net.Listen("tcp", ":"+port)
+	if err != nil {
+		return err
+	}
+
+	if err := rpcServer.Grpc.Serve(listener); err != nil {
 		return fmt.Errorf("failed to serve: %s", err)
 	}
 
@@ -115,7 +143,7 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	// Load certificate of the CA who signed client's certificate
 	var certPool *x509.CertPool
 	if len(os.Getenv("TSL_CLIENT_CERTIFICATE")) > 0 {
-		pemClientCA, err := ioutil.ReadFile(os.Getenv("TSL_CLIENT_CERTIFICATE"))
+		pemClientCA, err := os.ReadFile(os.Getenv("TSL_CLIENT_CERTIFICATE"))
 		if err != nil {
 			return nil, err
 		}
@@ -140,4 +168,36 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	}
 
 	return credentials.NewTLS(config), nil
+}
+
+func runWebServer(httpPort string, rpcServer *RpcServer) error {
+	grpc := rpcServer.WrappedGrpc
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
+		if grpc.IsGrpcWebRequest(req) || grpc.IsAcceptableGrpcCorsRequest(req) {
+			grpc.ServeHTTP(resp, req)
+		}
+	})
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedHeaders:   []string{"*"},
+		ExposedHeaders:   []string{"*"},
+		AllowCredentials: true,
+		// Enable Debugging for testing, consider disabling in production
+		Debug: false,
+	})
+
+	// Insert the middleware
+	handler := c.Handler(mux)
+
+	//handler := cors.Default().Handler(mux)
+
+	err := http.ListenAndServe(":"+httpPort, handler)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
