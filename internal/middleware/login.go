@@ -17,6 +17,16 @@ type Login struct {
 	Client users.UserServiceClient
 }
 
+type wrappedStream struct {
+	grpc.ServerStream
+	ctx context.Context
+}
+
+// Context method to override the context
+func (w *wrappedStream) Context() context.Context {
+	return w.ctx
+}
+
 // Unary interceptor
 func (u *Login) Unary() grpc.UnaryServerInterceptor {
 	return func(
@@ -49,12 +59,17 @@ func (u *Login) Stream() grpc.StreamServerInterceptor {
 		info *grpc.StreamServerInfo,
 		handler grpc.StreamHandler,
 	) error {
-		_, err := u.login(stream.Context())
+		ctx, err := u.login(stream.Context())
 		if err != nil {
 			return err
 		}
 
-		return handler(srv, stream)
+		wrappedStream := &wrappedStream{
+			ServerStream: stream,
+			ctx:          ctx,
+		}
+
+		return handler(srv, wrappedStream)
 	}
 }
 
