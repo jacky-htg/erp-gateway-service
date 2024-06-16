@@ -12,6 +12,6 @@ type Access struct {
 }
 
 // List access
-func (u *Access) List(ctx context.Context, in *users.MyEmpty) (*users.Access, error) {
+func (u *Access) List(ctx context.Context, in *users.MyEmpty) (*users.ListAccessResponse, error) {
 	return u.Client.List(ctx, in)
 }
