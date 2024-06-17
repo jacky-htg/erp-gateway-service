@@ -4,6 +4,7 @@ import (
 	"google.golang.org/grpc"
 
 	"erp-gateway/internal/service"
+	"erp-gateway/pb/inventories"
 	"erp-gateway/pb/users"
 )
 
@@ -39,4 +40,7 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 
 	groupServer := service.Group{Client: grpcClient["GroupClient"].(users.GroupServiceClient)}
 	users.RegisterGroupServiceServer(grpcServer, &groupServer)
+
+	brandServer := service.Brand{Client: grpcClient["BrandClient"].(inventories.BrandServiceClient)}
+	inventories.RegisterBrandServiceServer(grpcServer, &brandServer)
 }
