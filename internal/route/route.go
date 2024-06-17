@@ -43,4 +43,7 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 
 	brandServer := service.Brand{Client: grpcClient["BrandClient"].(inventories.BrandServiceClient)}
 	inventories.RegisterBrandServiceServer(grpcServer, &brandServer)
+
+	categoryServer := service.Category{Client: grpcClient["CategoryClient"].(inventories.CategoryServiceClient)}
+	inventories.RegisterCategoryServiceServer(grpcServer, &categoryServer)
 }
