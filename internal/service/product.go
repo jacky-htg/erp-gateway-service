@@ -35,6 +35,10 @@ func (u *Product) Delete(ctx context.Context, in *inventories.Id) (*inventories.
 	return u.Client.Delete(ctx, in)
 }
 
+func (u *Product) Track(ctx context.Context, in *inventories.Product) (*inventories.Transactions, error) {
+	return u.Client.Track(ctx, in)
+}
+
 // List Products
 func (u *Product) List(in *inventories.ListProductRequest, streamServer inventories.ProductService_ListServer) error {
 	ctx := streamServer.Context()
