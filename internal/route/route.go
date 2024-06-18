@@ -5,6 +5,7 @@ import (
 
 	"erp-gateway/internal/service"
 	"erp-gateway/pb/inventories"
+	"erp-gateway/pb/purchases"
 	"erp-gateway/pb/users"
 )
 
@@ -58,4 +59,7 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 
 	shelveServer := service.Shelve{Client: grpcClient["ShelveClient"].(inventories.ShelveServiceClient)}
 	inventories.RegisterShelveServiceServer(grpcServer, &shelveServer)
+
+	suppliereServer := service.Supplier{Client: grpcClient["SupplierClient"].(purchases.SupplierServiceClient)}
+	purchases.RegisterSupplierServiceServer(grpcServer, &suppliereServer)
 }
