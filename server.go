@@ -135,6 +135,7 @@ func getGrpcClient(userServiceConn, inventoryServiceConn *grpc.ClientConn) map[s
 	grpcClient["CategoryClient"] = inventories.NewCategoryServiceClient(inventoryServiceConn)
 	grpcClient["ProductCategoryClient"] = inventories.NewProductCategoryServiceClient(inventoryServiceConn)
 	grpcClient["ProductClient"] = inventories.NewProductServiceClient(inventoryServiceConn)
+	grpcClient["WarehouseClient"] = inventories.NewWarehouseServiceClient(inventoryServiceConn)
 
 	return grpcClient
 }

@@ -52,4 +52,7 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 
 	productServer := service.Product{Client: grpcClient["ProductClient"].(inventories.ProductServiceClient)}
 	inventories.RegisterProductServiceServer(grpcServer, &productServer)
+
+	warehouseServer := service.Warehouse{Client: grpcClient["WarehouseClient"].(inventories.WarehouseServiceClient)}
+	inventories.RegisterWarehouseServiceServer(grpcServer, &warehouseServer)
 }
