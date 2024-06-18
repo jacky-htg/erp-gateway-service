@@ -23,6 +23,7 @@ import (
 	"erp-gateway/internal/route"
 	"erp-gateway/pb/inventories"
 	"erp-gateway/pb/purchases"
+	"erp-gateway/pb/sales"
 	"erp-gateway/pb/users"
 )
 
@@ -82,7 +83,13 @@ func run(enableTLS *bool) error {
 	}
 	defer userServiceConn.Close()
 
-	grpcClient := getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn)
+	salesServiceConn, err := grpc.NewClient(os.Getenv("SALES_SERVICE"), grpc.WithTransportCredentials(clientCreds))
+	if err != nil {
+		return fmt.Errorf("sales service connection: %v", err)
+	}
+	defer userServiceConn.Close()
+
+	grpcClient := getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn, salesServiceConn)
 
 	loginInterceptor := middleware.Login{Client: grpcClient["UserClient"].(users.UserServiceClient)}
 	authInterceptor := middleware.Auth{Client: grpcClient["AuthClient"].(users.AuthServiceClient)}
@@ -125,7 +132,7 @@ func run(enableTLS *bool) error {
 	return nil
 }
 
-func getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn *grpc.ClientConn) map[string]interface{} {
+func getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn, salesServiceConn *grpc.ClientConn) map[string]interface{} {
 	grpcClient := make(map[string]interface{})
 	grpcClient["AuthClient"] = users.NewAuthServiceClient(userServiceConn)
 	grpcClient["UserClient"] = users.NewUserServiceClient(userServiceConn)
@@ -146,6 +153,8 @@ func getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn *g
 	grpcClient["ShelveClient"] = inventories.NewShelveServiceClient(inventoryServiceConn)
 
 	grpcClient["SupplierClient"] = purchases.NewSupplierServiceClient(purchaseServiceConn)
+
+	grpcClient["CustomerClient"] = sales.NewCustomerServiceClient(salesServiceConn)
 
 	return grpcClient
 }

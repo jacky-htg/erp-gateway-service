@@ -1,0 +1,40 @@
+syntax = "proto3";
+package sales;
+
+option go_package = "pb/sales;sales";
+option java_package = "com.wiradata.erpapplication.sales";
+option java_multiple_files = true;
+
+import "sales/sales_message.proto";
+
+message SalesReturn {
+  string id = 1;
+  string branch_id = 2;
+  string branch_name = 3;
+  Sales Sales = 4;
+  string code = 5;
+  string return_date = 6;
+  string remark = 7;
+  double price = 8;
+  double additional_disc_amount = 9;
+  float additional_disc_percentage = 10;
+  double total_price = 11;
+  string created_at = 12;
+  string created_by = 13;
+  string updated_at = 14;
+  string updated_by = 15;
+  repeated SalesReturnDetail details = 16;
+}
+
+message SalesReturnDetail {
+  string id = 1;
+  string sales_return_id = 2;
+  string product_id = 3;
+  string product_code = 4;
+  string product_name = 5;
+  int32 quantity = 6;
+  double price = 7;
+  double disc_amount = 8;
+  float disc_percentage = 9;
+  double total_price = 10;
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+package sales;
+
+option go_package = "pb/sales;sales";
+option java_package = "com.wiradata.erpapplication.sales";
+option java_multiple_files = true;
+
+import "sales/salesman_message.proto";
+import "sales/generic_message.proto";
+
+message ListSalesmanRequest {
+  Pagination pagination = 1;
+}
+
+message SalesmanPaginationResponse {
+  Pagination pagination = 1;
+  uint32 count = 2;
+}
+
+message ListSalesmanResponse {
+  SalesmanPaginationResponse pagination = 1;
+  Salesman salesman = 2; 
+}
+
+service SalesmanService {
+  rpc SalesmanCreate(Salesman) returns (Salesman) {}
+  rpc SalesmanUpdate(Salesman) returns (Salesman) {}
+  rpc SalesmanView(Id) returns (Salesman) {}
+  rpc SalesmanList(ListSalesmanRequest) returns (stream ListSalesmanResponse) {}
+}
