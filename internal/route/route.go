@@ -61,8 +61,11 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 	shelveServer := service.Shelve{Client: grpcClient["ShelveClient"].(inventories.ShelveServiceClient)}
 	inventories.RegisterShelveServiceServer(grpcServer, &shelveServer)
 
-	suppliereServer := service.Supplier{Client: grpcClient["SupplierClient"].(purchases.SupplierServiceClient)}
-	purchases.RegisterSupplierServiceServer(grpcServer, &suppliereServer)
+	supplierServer := service.Supplier{Client: grpcClient["SupplierClient"].(purchases.SupplierServiceClient)}
+	purchases.RegisterSupplierServiceServer(grpcServer, &supplierServer)
+
+	purchaseServer := service.Purchase{Client: grpcClient["PurchaseClient"].(purchases.PurchaseServiceClient)}
+	purchases.RegisterPurchaseServiceServer(grpcServer, &purchaseServer)
 
 	customerServer := service.Customer{Client: grpcClient["CustomerClient"].(sales.CustomerServiceClient)}
 	sales.RegisterCustomerServiceServer(grpcServer, &customerServer)
