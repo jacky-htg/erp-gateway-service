@@ -67,6 +67,9 @@ func GrpcRoute(grpcServer *grpc.Server, grpcClient map[string]interface{}) {
 	purchaseServer := service.Purchase{Client: grpcClient["PurchaseClient"].(purchases.PurchaseServiceClient)}
 	purchases.RegisterPurchaseServiceServer(grpcServer, &purchaseServer)
 
+	purchaseReturnServer := service.PurchaseReturn{Client: grpcClient["PurchaseReturnClient"].(purchases.PurchaseReturnServiceClient)}
+	purchases.RegisterPurchaseReturnServiceServer(grpcServer, &purchaseReturnServer)
+
 	customerServer := service.Customer{Client: grpcClient["CustomerClient"].(sales.CustomerServiceClient)}
 	sales.RegisterCustomerServiceServer(grpcServer, &customerServer)
 
