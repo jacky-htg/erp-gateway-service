@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PurchaseService_PurchaseCreate_FullMethodName = "/purchases.PurchaseService/PurchaseCreate"
-	PurchaseService_PurchaseUpdate_FullMethodName = "/purchases.PurchaseService/PurchaseUpdate"
-	PurchaseService_PurchaseView_FullMethodName   = "/purchases.PurchaseService/PurchaseView"
-	PurchaseService_PurchaseList_FullMethodName   = "/purchases.PurchaseService/PurchaseList"
+	PurchaseService_PurchaseCreate_FullMethodName                = "/purchases.PurchaseService/PurchaseCreate"
+	PurchaseService_PurchaseUpdate_FullMethodName                = "/purchases.PurchaseService/PurchaseUpdate"
+	PurchaseService_PurchaseView_FullMethodName                  = "/purchases.PurchaseService/PurchaseView"
+	PurchaseService_PurchaseList_FullMethodName                  = "/purchases.PurchaseService/PurchaseList"
+	PurchaseService_GetOutstandingPurchaseDetails_FullMethodName = "/purchases.PurchaseService/GetOutstandingPurchaseDetails"
 )
 
 // PurchaseServiceClient is the client API for PurchaseService service.
@@ -33,6 +34,7 @@ type PurchaseServiceClient interface {
 	PurchaseUpdate(ctx context.Context, in *Purchase, opts ...grpc.CallOption) (*Purchase, error)
 	PurchaseView(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Purchase, error)
 	PurchaseList(ctx context.Context, in *ListPurchaseRequest, opts ...grpc.CallOption) (PurchaseService_PurchaseListClient, error)
+	GetOutstandingPurchaseDetails(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error)
 }
 
 type purchaseServiceClient struct {
@@ -102,6 +104,15 @@ func (x *purchaseServicePurchaseListClient) Recv() (*ListPurchaseResponse, error
 	return m, nil
 }
 
+func (c *purchaseServiceClient) GetOutstandingPurchaseDetails(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error) {
+	out := new(OutstandingPurchaseDetails)
+	err := c.cc.Invoke(ctx, PurchaseService_GetOutstandingPurchaseDetails_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PurchaseServiceServer is the server API for PurchaseService service.
 // All implementations must embed UnimplementedPurchaseServiceServer
 // for forward compatibility
@@ -110,6 +121,7 @@ type PurchaseServiceServer interface {
 	PurchaseUpdate(context.Context, *Purchase) (*Purchase, error)
 	PurchaseView(context.Context, *Id) (*Purchase, error)
 	PurchaseList(*ListPurchaseRequest, PurchaseService_PurchaseListServer) error
+	GetOutstandingPurchaseDetails(context.Context, *Id) (*OutstandingPurchaseDetails, error)
 	mustEmbedUnimplementedPurchaseServiceServer()
 }
 
@@ -128,6 +140,9 @@ func (UnimplementedPurchaseServiceServer) PurchaseView(context.Context, *Id) (*P
 }
 func (UnimplementedPurchaseServiceServer) PurchaseList(*ListPurchaseRequest, PurchaseService_PurchaseListServer) error {
 	return status.Errorf(codes.Unimplemented, "method PurchaseList not implemented")
+}
+func (UnimplementedPurchaseServiceServer) GetOutstandingPurchaseDetails(context.Context, *Id) (*OutstandingPurchaseDetails, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOutstandingPurchaseDetails not implemented")
 }
 func (UnimplementedPurchaseServiceServer) mustEmbedUnimplementedPurchaseServiceServer() {}
 
@@ -217,6 +232,24 @@ func (x *purchaseServicePurchaseListServer) Send(m *ListPurchaseResponse) error 
 	return x.ServerStream.SendMsg(m)
 }
 
+func _PurchaseService_GetOutstandingPurchaseDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PurchaseServiceServer).GetOutstandingPurchaseDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PurchaseService_GetOutstandingPurchaseDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PurchaseServiceServer).GetOutstandingPurchaseDetails(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PurchaseService_ServiceDesc is the grpc.ServiceDesc for PurchaseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -235,6 +268,10 @@ var PurchaseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PurchaseView",
 			Handler:    _PurchaseService_PurchaseView_Handler,
+		},
+		{
+			MethodName: "GetOutstandingPurchaseDetails",
+			Handler:    _PurchaseService_GetOutstandingPurchaseDetails_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

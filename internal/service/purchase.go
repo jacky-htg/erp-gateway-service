@@ -57,3 +57,7 @@ func (u *Purchase) PurchaseList(in *purchases.ListPurchaseRequest, streamServer 
 
 	return nil
 }
+
+func (u *Purchase) GetOutstandingPurchaseDetails(ctx context.Context, in *purchases.Id) (*purchases.OutstandingPurchaseDetails, error) {
+	return u.Client.GetOutstandingPurchaseDetails(ctx, in)
+}

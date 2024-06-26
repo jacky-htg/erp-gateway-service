@@ -38,3 +38,7 @@ message PurchaseDetail {
   float disc_percentage = 9;
   double total_price = 10;
 }
+
+message OutstandingPurchaseDetails {
+  repeated PurchaseDetail detail = 1;
+}
