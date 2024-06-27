@@ -34,7 +34,7 @@ type PurchaseServiceClient interface {
 	PurchaseUpdate(ctx context.Context, in *Purchase, opts ...grpc.CallOption) (*Purchase, error)
 	PurchaseView(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Purchase, error)
 	PurchaseList(ctx context.Context, in *ListPurchaseRequest, opts ...grpc.CallOption) (PurchaseService_PurchaseListClient, error)
-	GetOutstandingPurchaseDetails(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error)
+	GetOutstandingPurchaseDetails(ctx context.Context, in *OutstandingPurchaseRequest, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error)
 }
 
 type purchaseServiceClient struct {
@@ -104,7 +104,7 @@ func (x *purchaseServicePurchaseListClient) Recv() (*ListPurchaseResponse, error
 	return m, nil
 }
 
-func (c *purchaseServiceClient) GetOutstandingPurchaseDetails(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error) {
+func (c *purchaseServiceClient) GetOutstandingPurchaseDetails(ctx context.Context, in *OutstandingPurchaseRequest, opts ...grpc.CallOption) (*OutstandingPurchaseDetails, error) {
 	out := new(OutstandingPurchaseDetails)
 	err := c.cc.Invoke(ctx, PurchaseService_GetOutstandingPurchaseDetails_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -121,7 +121,7 @@ type PurchaseServiceServer interface {
 	PurchaseUpdate(context.Context, *Purchase) (*Purchase, error)
 	PurchaseView(context.Context, *Id) (*Purchase, error)
 	PurchaseList(*ListPurchaseRequest, PurchaseService_PurchaseListServer) error
-	GetOutstandingPurchaseDetails(context.Context, *Id) (*OutstandingPurchaseDetails, error)
+	GetOutstandingPurchaseDetails(context.Context, *OutstandingPurchaseRequest) (*OutstandingPurchaseDetails, error)
 	mustEmbedUnimplementedPurchaseServiceServer()
 }
 
@@ -141,7 +141,7 @@ func (UnimplementedPurchaseServiceServer) PurchaseView(context.Context, *Id) (*P
 func (UnimplementedPurchaseServiceServer) PurchaseList(*ListPurchaseRequest, PurchaseService_PurchaseListServer) error {
 	return status.Errorf(codes.Unimplemented, "method PurchaseList not implemented")
 }
-func (UnimplementedPurchaseServiceServer) GetOutstandingPurchaseDetails(context.Context, *Id) (*OutstandingPurchaseDetails, error) {
+func (UnimplementedPurchaseServiceServer) GetOutstandingPurchaseDetails(context.Context, *OutstandingPurchaseRequest) (*OutstandingPurchaseDetails, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOutstandingPurchaseDetails not implemented")
 }
 func (UnimplementedPurchaseServiceServer) mustEmbedUnimplementedPurchaseServiceServer() {}
@@ -233,7 +233,7 @@ func (x *purchaseServicePurchaseListServer) Send(m *ListPurchaseResponse) error 
 }
 
 func _PurchaseService_GetOutstandingPurchaseDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Id)
+	in := new(OutstandingPurchaseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -245,7 +245,7 @@ func _PurchaseService_GetOutstandingPurchaseDetails_Handler(srv interface{}, ctx
 		FullMethod: PurchaseService_GetOutstandingPurchaseDetails_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PurchaseServiceServer).GetOutstandingPurchaseDetails(ctx, req.(*Id))
+		return srv.(PurchaseServiceServer).GetOutstandingPurchaseDetails(ctx, req.(*OutstandingPurchaseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -31,5 +31,5 @@ service PurchaseService {
   rpc PurchaseUpdate(Purchase) returns (Purchase) {}
   rpc PurchaseView(Id) returns (Purchase) {}
   rpc PurchaseList(ListPurchaseRequest) returns (stream ListPurchaseResponse) {}
-  rpc GetOutstandingPurchaseDetails(Id) returns (OutstandingPurchaseDetails) {}
+  rpc GetOutstandingPurchaseDetails(OutstandingPurchaseRequest) returns (OutstandingPurchaseDetails) {}
 }

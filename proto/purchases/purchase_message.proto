@@ -42,3 +42,8 @@ message PurchaseDetail {
 message OutstandingPurchaseDetails {
   repeated PurchaseDetail detail = 1;
 }
+
+message OutstandingPurchaseRequest {
+  string id = 1;
+  string return_id = 2;
+}
