@@ -151,6 +151,7 @@ func getGrpcClient(userServiceConn, inventoryServiceConn, purchaseServiceConn, s
 	grpcClient["ProductClient"] = inventories.NewProductServiceClient(inventoryServiceConn)
 	grpcClient["WarehouseClient"] = inventories.NewWarehouseServiceClient(inventoryServiceConn)
 	grpcClient["ShelveClient"] = inventories.NewShelveServiceClient(inventoryServiceConn)
+	grpcClient["ReceiveClient"] = inventories.NewReceiveServiceClient(inventoryServiceConn)
 
 	grpcClient["SupplierClient"] = purchases.NewSupplierServiceClient(purchaseServiceConn)
 	grpcClient["PurchaseClient"] = purchases.NewPurchaseServiceClient(purchaseServiceConn)

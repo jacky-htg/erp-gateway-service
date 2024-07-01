@@ -31,9 +31,7 @@ message PaginationResponse {
 
 message OutstandingDetail {
   string product_id = 1;
-  string product_name = 2;
-  string product_code = 3;
-  uint32 quantity = 4;
+  uint32 quantity = 2;
 }
 
 message OutstandingResponse {

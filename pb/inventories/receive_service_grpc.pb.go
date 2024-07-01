@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ReceiveService_Create_FullMethodName = "/wiradata.inventories.ReceiveService/Create"
-	ReceiveService_Update_FullMethodName = "/wiradata.inventories.ReceiveService/Update"
-	ReceiveService_View_FullMethodName   = "/wiradata.inventories.ReceiveService/View"
-	ReceiveService_List_FullMethodName   = "/wiradata.inventories.ReceiveService/List"
+	ReceiveService_Create_FullMethodName                = "/wiradata.inventories.ReceiveService/Create"
+	ReceiveService_Update_FullMethodName                = "/wiradata.inventories.ReceiveService/Update"
+	ReceiveService_View_FullMethodName                  = "/wiradata.inventories.ReceiveService/View"
+	ReceiveService_List_FullMethodName                  = "/wiradata.inventories.ReceiveService/List"
+	ReceiveService_OutstandingByPurchase_FullMethodName = "/wiradata.inventories.ReceiveService/OutstandingByPurchase"
 )
 
 // ReceiveServiceClient is the client API for ReceiveService service.
@@ -33,6 +34,7 @@ type ReceiveServiceClient interface {
 	Update(ctx context.Context, in *Receive, opts ...grpc.CallOption) (*Receive, error)
 	View(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Receive, error)
 	List(ctx context.Context, in *ListReceiveRequest, opts ...grpc.CallOption) (ReceiveService_ListClient, error)
+	OutstandingByPurchase(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingResponse, error)
 }
 
 type receiveServiceClient struct {
@@ -102,6 +104,15 @@ func (x *receiveServiceListClient) Recv() (*ListReceiveResponse, error) {
 	return m, nil
 }
 
+func (c *receiveServiceClient) OutstandingByPurchase(ctx context.Context, in *Id, opts ...grpc.CallOption) (*OutstandingResponse, error) {
+	out := new(OutstandingResponse)
+	err := c.cc.Invoke(ctx, ReceiveService_OutstandingByPurchase_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReceiveServiceServer is the server API for ReceiveService service.
 // All implementations must embed UnimplementedReceiveServiceServer
 // for forward compatibility
@@ -110,6 +121,7 @@ type ReceiveServiceServer interface {
 	Update(context.Context, *Receive) (*Receive, error)
 	View(context.Context, *Id) (*Receive, error)
 	List(*ListReceiveRequest, ReceiveService_ListServer) error
+	OutstandingByPurchase(context.Context, *Id) (*OutstandingResponse, error)
 	mustEmbedUnimplementedReceiveServiceServer()
 }
 
@@ -128,6 +140,9 @@ func (UnimplementedReceiveServiceServer) View(context.Context, *Id) (*Receive, e
 }
 func (UnimplementedReceiveServiceServer) List(*ListReceiveRequest, ReceiveService_ListServer) error {
 	return status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedReceiveServiceServer) OutstandingByPurchase(context.Context, *Id) (*OutstandingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OutstandingByPurchase not implemented")
 }
 func (UnimplementedReceiveServiceServer) mustEmbedUnimplementedReceiveServiceServer() {}
 
@@ -217,6 +232,24 @@ func (x *receiveServiceListServer) Send(m *ListReceiveResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _ReceiveService_OutstandingByPurchase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReceiveServiceServer).OutstandingByPurchase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReceiveService_OutstandingByPurchase_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReceiveServiceServer).OutstandingByPurchase(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReceiveService_ServiceDesc is the grpc.ServiceDesc for ReceiveService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -235,6 +268,10 @@ var ReceiveService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "View",
 			Handler:    _ReceiveService_View_Handler,
+		},
+		{
+			MethodName: "OutstandingByPurchase",
+			Handler:    _ReceiveService_OutstandingByPurchase_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

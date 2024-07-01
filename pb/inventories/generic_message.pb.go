@@ -434,6 +434,124 @@ func (x *PaginationResponse) GetCount() uint32 {
 	return 0
 }
 
+type OutstandingDetail struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ProductId   string `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	ProductName string `protobuf:"bytes,2,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`
+	ProductCode string `protobuf:"bytes,3,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	Quantity    uint32 `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+}
+
+func (x *OutstandingDetail) Reset() {
+	*x = OutstandingDetail{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_inventories_generic_message_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OutstandingDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OutstandingDetail) ProtoMessage() {}
+
+func (x *OutstandingDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_inventories_generic_message_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OutstandingDetail.ProtoReflect.Descriptor instead.
+func (*OutstandingDetail) Descriptor() ([]byte, []int) {
+	return file_inventories_generic_message_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OutstandingDetail) GetProductId() string {
+	if x != nil {
+		return x.ProductId
+	}
+	return ""
+}
+
+func (x *OutstandingDetail) GetProductName() string {
+	if x != nil {
+		return x.ProductName
+	}
+	return ""
+}
+
+func (x *OutstandingDetail) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *OutstandingDetail) GetQuantity() uint32 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+type OutstandingResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Detail []*OutstandingDetail `protobuf:"bytes,1,rep,name=detail,proto3" json:"detail,omitempty"`
+}
+
+func (x *OutstandingResponse) Reset() {
+	*x = OutstandingResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_inventories_generic_message_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OutstandingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OutstandingResponse) ProtoMessage() {}
+
+func (x *OutstandingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventories_generic_message_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OutstandingResponse.ProtoReflect.Descriptor instead.
+func (*OutstandingResponse) Descriptor() ([]byte, []int) {
+	return file_inventories_generic_message_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OutstandingResponse) GetDetail() []*OutstandingDetail {
+	if x != nil {
+		return x.Detail
+	}
+	return nil
+}
+
 var File_inventories_generic_message_proto protoreflect.FileDescriptor
 
 var file_inventories_generic_message_proto_rawDesc = []byte{
@@ -470,12 +588,27 @@ var file_inventories_generic_message_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x69, 0x65, 0x73, 0x2e, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
 	0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05,
 	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x63, 0x6f, 0x75,
-	0x6e, 0x74, 0x42, 0x47, 0x0a, 0x27, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x69, 0x72, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0x2e, 0x65, 0x72, 0x70, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x2e, 0x69, 0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x50, 0x01, 0x5a,
-	0x1a, 0x70, 0x62, 0x2f, 0x69, 0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x3b,
-	0x69, 0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x6e, 0x74, 0x22, 0x94, 0x01, 0x0a, 0x11, 0x4f, 0x75, 0x74, 0x73, 0x74, 0x61, 0x6e, 0x64, 0x69,
+	0x6e, 0x67, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x64,
+	0x75, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x72,
+	0x6f, 0x64, 0x75, 0x63, 0x74, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x64, 0x75,
+	0x63, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70,
+	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72,
+	0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0b, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1a, 0x0a,
+	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0d, 0x52,
+	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x22, 0x56, 0x0a, 0x13, 0x4f, 0x75, 0x74,
+	0x73, 0x74, 0x61, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x3f, 0x0a, 0x06, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x27, 0x2e, 0x77, 0x69, 0x72, 0x61, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x69, 0x6e, 0x76, 0x65,
+	0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x2e, 0x4f, 0x75, 0x74, 0x73, 0x74, 0x61, 0x6e, 0x64,
+	0x69, 0x6e, 0x67, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x06, 0x64, 0x65, 0x74, 0x61, 0x69,
+	0x6c, 0x42, 0x47, 0x0a, 0x27, 0x63, 0x6f, 0x6d, 0x2e, 0x77, 0x69, 0x72, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0x2e, 0x65, 0x72, 0x70, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x2e, 0x69, 0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x50, 0x01, 0x5a, 0x1a,
+	0x70, 0x62, 0x2f, 0x69, 0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x3b, 0x69,
+	0x6e, 0x76, 0x65, 0x6e, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -491,25 +624,28 @@ func file_inventories_generic_message_proto_rawDescGZIP() []byte {
 }
 
 var file_inventories_generic_message_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_inventories_generic_message_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_inventories_generic_message_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_inventories_generic_message_proto_goTypes = []interface{}{
-	(Pagination_Sort)(0),       // 0: wiradata.inventories.Pagination.Sort
-	(*MyEmpty)(nil),            // 1: wiradata.inventories.MyEmpty
-	(*Id)(nil),                 // 2: wiradata.inventories.Id
-	(*MyString)(nil),           // 3: wiradata.inventories.MyString
-	(*Message)(nil),            // 4: wiradata.inventories.Message
-	(*MyBoolean)(nil),          // 5: wiradata.inventories.MyBoolean
-	(*Pagination)(nil),         // 6: wiradata.inventories.Pagination
-	(*PaginationResponse)(nil), // 7: wiradata.inventories.PaginationResponse
+	(Pagination_Sort)(0),        // 0: wiradata.inventories.Pagination.Sort
+	(*MyEmpty)(nil),             // 1: wiradata.inventories.MyEmpty
+	(*Id)(nil),                  // 2: wiradata.inventories.Id
+	(*MyString)(nil),            // 3: wiradata.inventories.MyString
+	(*Message)(nil),             // 4: wiradata.inventories.Message
+	(*MyBoolean)(nil),           // 5: wiradata.inventories.MyBoolean
+	(*Pagination)(nil),          // 6: wiradata.inventories.Pagination
+	(*PaginationResponse)(nil),  // 7: wiradata.inventories.PaginationResponse
+	(*OutstandingDetail)(nil),   // 8: wiradata.inventories.OutstandingDetail
+	(*OutstandingResponse)(nil), // 9: wiradata.inventories.OutstandingResponse
 }
 var file_inventories_generic_message_proto_depIdxs = []int32{
 	0, // 0: wiradata.inventories.Pagination.sort:type_name -> wiradata.inventories.Pagination.Sort
 	6, // 1: wiradata.inventories.PaginationResponse.pagination:type_name -> wiradata.inventories.Pagination
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	8, // 2: wiradata.inventories.OutstandingResponse.detail:type_name -> wiradata.inventories.OutstandingDetail
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_inventories_generic_message_proto_init() }
@@ -602,6 +738,30 @@ func file_inventories_generic_message_proto_init() {
 				return nil
 			}
 		}
+		file_inventories_generic_message_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OutstandingDetail); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_inventories_generic_message_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OutstandingResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -609,7 +769,7 @@ func file_inventories_generic_message_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_inventories_generic_message_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
