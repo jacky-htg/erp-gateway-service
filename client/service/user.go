@@ -1,10 +1,10 @@
 package service
 
 import (
-	"erp-gateway/pb/users"
 	"io"
 	"log"
 
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 	"golang.org/x/net/context"
 )
 

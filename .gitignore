@@ -19,4 +19,4 @@
 .env
 go.mod
 go.sum
-log/*
+gateway-service

@@ -3,11 +3,10 @@ package main
 import (
 	"log"
 
+	"github.com/jacky-htg/erp-gateway-service/client/service"
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-
-	"erp-gateway/client/service"
-	"erp-gateway/pb/users"
 )
 
 func main() {

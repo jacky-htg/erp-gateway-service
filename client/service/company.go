@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"erp-gateway/pb/users"
 	"log"
+
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 )
 
 // Registration service client

@@ -1,13 +1,12 @@
 package route
 
 import (
+	"github.com/jacky-htg/erp-gateway-service/internal/service"
+	"github.com/jacky-htg/erp-proto/go/pb/inventories"
+	"github.com/jacky-htg/erp-proto/go/pb/purchases"
+	"github.com/jacky-htg/erp-proto/go/pb/sales"
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 	"google.golang.org/grpc"
-
-	"erp-gateway/internal/service"
-	"erp-gateway/pb/inventories"
-	"erp-gateway/pb/purchases"
-	"erp-gateway/pb/sales"
-	"erp-gateway/pb/users"
 )
 
 // GrpcRoute func

@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"erp-gateway/pb/users"
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 )
 
 // Auth struct

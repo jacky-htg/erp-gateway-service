@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"erp-gateway/pb/purchases"
 	"io"
 	"log"
 
+	"github.com/jacky-htg/erp-proto/go/pb/purchases"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

@@ -2,9 +2,10 @@ package service
 
 import (
 	"context"
-	"erp-gateway/pb/users"
 	"io"
 	"log"
+
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 )
 
 // ListFeature service client

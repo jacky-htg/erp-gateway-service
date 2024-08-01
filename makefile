@@ -16,4 +16,8 @@ server:
 server-tls:
 	go run server.go --tls
 
-.PHONY: gen init migrate seed server
+build:
+	env GOOS=linux GOARCH=amd64 go build -o gateway-service
+
+
+.PHONY: gen init migrate seed server build

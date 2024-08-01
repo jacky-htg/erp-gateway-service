@@ -12,19 +12,18 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"github.com/jacky-htg/erp-gateway-service/internal/config"
+	"github.com/jacky-htg/erp-gateway-service/internal/middleware"
+	"github.com/jacky-htg/erp-gateway-service/internal/route"
+	"github.com/jacky-htg/erp-proto/go/pb/inventories"
+	"github.com/jacky-htg/erp-proto/go/pb/purchases"
+	"github.com/jacky-htg/erp-proto/go/pb/sales"
+	"github.com/jacky-htg/erp-proto/go/pb/users"
 	_ "github.com/lib/pq"
 	"github.com/rs/cors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"erp-gateway/internal/config"
-	"erp-gateway/internal/middleware"
-	"erp-gateway/internal/route"
-	"erp-gateway/pb/inventories"
-	"erp-gateway/pb/purchases"
-	"erp-gateway/pb/sales"
-	"erp-gateway/pb/users"
 )
 
 const defaultPort = "8080"
@@ -50,7 +49,7 @@ func main() {
 		config.Setup(".env")
 	}
 
-	log := log.New(os.Stdout, "Essentials : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
+	log := log.New(os.Stdout, "ERROR : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 	if err := run(enableTLS); err != nil {
 		log.Printf("error: shutting down: %s", err)
 		os.Exit(1)
